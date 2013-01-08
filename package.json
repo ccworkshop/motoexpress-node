@@ -1,0 +1,23 @@
+{
+  "name": "application-name",
+  "version": "0.0.1",
+  "private": true,
+  "scripts": {
+    "start": "node app"
+  },
+  "author": {
+    "name": "smlsun",
+    "email": "smlsun@gmail.com"
+  },
+  "dependencies": {
+    "express": "*",
+    "jade": "*",
+    "mongoose": "*",
+    "stylus": "*",
+    "mongodb": "*",
+    "moment" : "*",
+    "emailjs": "*",
+    "nib": "*"
+
+  }
+}

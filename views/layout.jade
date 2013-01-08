@@ -1,0 +1,71 @@
+doctype 5
+html
+	head
+		meta(charset='utf-8')
+		title #{title}
+		meta(http-equiv='X-UA-Compatible', content='IE=Edge,chrome=1')
+		meta(name='viewport', content='width=device-width, initial-scale=1.0')
+		meta(name='description', content='')
+		meta(name='author', content='')
+
+		link(href='//netdna.bootstrapcdn.com/twitter-bootstrap/2.2.2/css/bootstrap-combined.min.css', rel='stylesheet')
+		link(rel='stylesheet', href='/css/style.css')
+		script(type='text/javascript')
+			var _gaq = _gaq || [];
+			_gaq.push(['_setAccount', '']);
+			_gaq.push(['_setDomainName', '']);
+			_gaq.push(['_trackPageview']);
+			(function() {
+				var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+				ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+				var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+			})();
+
+
+	body
+		.navbar
+			.navbar-inner
+				h1 Moto Express
+				a.btn.btn-primary(href='/') 首頁
+				a.btn.btn-primary(href='/fixnote') 維修記錄
+				a.btn.btn-primary(href='/map') 維修地圖
+				a.btn.btn-primary(href='/addstore') 新增店家
+				- if (locals.session.user == null)
+					a.btn.btn-primary(href='/login') 登入/建立 帳號				
+
+
+
+
+
+				- if (locals.session.user != null)
+					#btn-logout.button.btn.btn-primary
+						i.icon-lock.icon-white 
+						|Sign Out
+					a.btn.btn-primary(href='/setting') 設置	
+
+
+
+
+		block content
+
+
+		.container.marketing
+			footer
+				p.pull-right
+					a(href='#') 回到頁首
+				p
+					| © 2012 What did you buy?
+
+		include modals/alert
+		include modals/confirm
+
+	script(src='//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js')
+
+	script(src='//netdna.bootstrapcdn.com/twitter-bootstrap/2.2.2/js/bootstrap.min.js')
+	script(type='text/javascript', src='js/util.js')
+	script(src='/vendor/jquery.form.js')
+	script(src='/js/views/logout.js')
+
+
+	block footer
+

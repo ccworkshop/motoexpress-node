@@ -1,0 +1,32 @@
+extends layout
+
+block content
+	.row-fluid
+		form#myForm(modelattribute='mymodel')
+			.span12
+				.well.clearfix
+					.span5
+						legend 交通工具基本資料
+						table(width='100%', align='center')
+
+							tr
+								td
+									label(for='lable1') 車牌
+								td
+									input#input1.input-xlarge
+							tr
+								td
+									label(for='lable2') 廠牌
+								td
+									input#input2.input-xlarge
+							tr
+								td
+									label(for='lable3') 型號
+								td
+									input#input3.input-xlarge
+							tr
+								td(colspan='2', align='center')
+									button.btn.btn-primary(type='submit') Submit
+									button#resetButton.btn(type='reset') Reset
+					.span5.offset1
+						legend Text2

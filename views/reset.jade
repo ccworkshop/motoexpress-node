@@ -1,0 +1,9 @@
+extends layout
+
+block content
+	include modals/reset-password
+
+
+block footer
+	script(src='/js/form-validators/resetValidator.js')
+	script(src='/js/views/reset.js')

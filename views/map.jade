@@ -1,0 +1,54 @@
+extends layout
+
+block content
+	.navbar
+		.navbar-inner
+			form.navbar-form.pull-left(onsubmit='showAddress();return false')
+				select#city
+					option(value='') 選擇縣市
+					option(value='台北市') 台北市
+					option(value='基隆市') 基隆市
+					option(value='台北縣') 台北縣
+					option(value='宜蘭縣') 宜蘭縣
+					option(value='新竹市') 新竹市
+					option(value='新竹縣') 新竹縣
+					option(value='桃園縣') 桃園縣
+					option(value='苗栗縣') 苗栗縣
+					option(value='台中市') 台中市
+					option(value='台中縣') 台中縣
+					option(value='彰化縣') 彰化縣
+					option(value='南投縣') 南投縣
+					option(value='嘉義市') 嘉義市
+					option(value='嘉義縣') 嘉義縣
+					option(value='雲林縣') 雲林縣
+					option(value='台南市') 台南市
+					option(value='台南縣') 台南縣
+					option(value='高雄市') 高雄市
+					option(value='高雄縣') 高雄縣
+					option(value='屏東縣') 屏東縣
+					option(value='台東縣') 台東縣
+					option(value='花蓮縣') 花蓮縣
+					option(value='連江縣') 連江縣
+					option(value='澎湖縣') 澎湖縣
+					option(value='金門縣') 金門縣
+				input#address.span2(type='text')
+				button.btn(type='button', onclick='showAddress();') 查詢
+				a.btn.btn-primary(onclick='gpsLocal();') 重新定位
+
+	.container-fluid
+		.row-fluid
+			.span12
+				#map_canvas(style='width: 100%;')
+			//- .span3
+			//- 	.well.sidebar-nav
+			//- 		ul.nav.nav-list
+			//- 			li.nav-header Sidebar
+			//- 			li.active
+			//- 				a(href='#') Link
+			//- 			li
+			//- 				a(href='#') Link
+			//- 			li
+			//- 				a(href='#') Link
+block footer
+	script(type='text/javascript', src='https://maps.google.com/maps/api/js?sensor=true')
+	script(type='text/javascript', src='js/map.js')
