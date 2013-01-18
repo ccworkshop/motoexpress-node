@@ -18,13 +18,14 @@ body{margin:0;padding:0;height:100%;background:#f2f9fe;background:-moz-radial-gr
 .modal-single-input .modal-footer{height:20px}
 .modal-alert{width:310px;margin:100px 0 0 -150px}
 #btn-logout{width:100px;top:1px;right:8px;position:absolute}
+#btn-setting{width:100px;top:1px;right:8px;position:absolute}
 #print{padding:20px}
 #four04{padding:20px}
 .clear-fix{clear:both}
 .well{margin-left:0;border:1px solid #ccc}
 .form-horizontal .control-label{width:80px}
 .form-horizontal .controls{margin-left:120px}
-.form-horizontal .form-actions{padding:17px 0 0 270px}
+.form-horizontal .form-actions{padding:17px 0 0 0}
 label{color:#808080;text-shadow:-1px 1px 0 #fff;-moz-text-shadow:-1px 1px 0 #fff;-webkit-text-shadow:-1px 1px 0 #fff}
 .subheading{color:#808080;text-shadow:-1px 1px 0 #fff;-moz-text-shadow:-1px 1px 0 #fff;-webkit-text-shadow:-1px 1px 0 #fff;margin-top:3px}
 button i{padding-left:8px}

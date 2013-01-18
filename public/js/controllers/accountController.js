@@ -1,5 +1,5 @@
 
-function HomeController()
+function AccountController()
 {
 
 // bind event listeners to button clicks //
@@ -33,7 +33,7 @@ function HomeController()
 
 }
 
-HomeController.prototype.onUpdateSuccess = function()
+AccountController.prototype.onUpdateSuccess = function()
 {
 	$('.modal-alert').modal({ show : false, keyboard : true, backdrop : true });
 	$('.modal-alert .modal-header h3').text('Success!');

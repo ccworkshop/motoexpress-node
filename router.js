@@ -1,10 +1,11 @@
 
-var motostore = require('./modules/motostores');
+
 var pages = require('./modules/pages');
 
 var CT = require('./modules/country-list');
 var AM = require('./modules/account-manager');
 var EM = require('./modules/email-dispatcher');
+var MM = require('./modules/motostore-manager');
 
 
 module.exports = function(app) {
@@ -12,12 +13,33 @@ module.exports = function(app) {
 	console.log("router init");
 	app.get("/",pages.index);
 	app.get("/map",pages.map);
+	app.get("/cusgeo",pages.cusgeo);
 	app.get("/fixnote",pages.fixnote);
-	app.get("/addstore",pages.addstore);
 
-	app.get("/listAll",motostore.listAll);
-	app.get("/listNear/:latitude/:longitude/:distinct",motostore.listNear);
 
+	app.get("/listAll",MM.listAll);
+	app.get("/listNear/:latitude/:longitude/:distinct",MM.listNear);
+
+
+	app.get("/store",pages.store);
+
+	app.post('/store', function(req, res){
+
+		MM.addStore({
+			name 	: req.param('name'),
+			address 	: req.param('address'),
+			tel 	: req.param('tel'),
+			description	: req.param('description'),
+			latitude : req.param('latitude'),
+			longitude : req.param('longitude')
+		}, function(e){
+			if (e){
+				res.send(e, 400);
+			}	else{
+				res.send('ok', 200);
+			}
+		});
+	});
 
 
 
@@ -31,7 +53,16 @@ module.exports = function(app) {
 			AM.autoLogin(req.cookies.user, req.cookies.pass, function(o){
 				if (o != null){
 				  req.session.user = o;
-					res.redirect('/fixnote');
+
+				  console.log(o.user+" role "+o.role);
+
+				  console.log(o.role=='USER');
+
+				  if(o.role=='USER')
+						res.redirect('/map');
+					else if(o.role=='STORE')
+						res.redirect('/cusgeo');
+
 				}	else{
 					res.render('login', {title: 'Hello - Please Login To Your Account' });
 				}
@@ -49,7 +80,12 @@ module.exports = function(app) {
 					res.cookie('user', o.user, { maxAge: 900000 });
 					res.cookie('pass', o.pass, { maxAge: 900000 });
 				}
-				res.send(o, 200);
+
+				if(o.role=='USER')
+					res.send({redirect:"/map"}, 200);
+				else if(o.role=='STORE')
+					res.send({redirect:"/cusgeo"}, 200);
+				
 			}
 		});
 	});
@@ -114,7 +150,8 @@ module.exports = function(app) {
 			email 	: req.param('email'),
 			user 	: req.param('user'),
 			pass	: req.param('pass'),
-			country : req.param('country')
+			country : req.param('country'),
+			role: 'USER'
 		}, function(e){
 			if (e){
 				res.send(e, 400);
@@ -175,7 +212,79 @@ module.exports = function(app) {
 			}
 		})
 	});
+
+	app.get('/print', function(req, res) {
+		AM.getAllRecords( function(e, accounts){
+			res.render('print',  { title : 'Account List', accts : accounts } );
+		})
+	});
 	
+	app.post('/delete', function(req, res){
+		AM.deleteAccount(req.body.id, function(e, obj){
+			if (!e){
+				res.clearCookie('user');
+				res.clearCookie('pass');
+	      req.session.destroy(function(e){ res.send('ok', 200); });
+			}	else{
+				res.send('record not found', 400);
+			}
+	    });
+	});
+	
+	app.get('/reset', function(req, res) {
+		AM.delAllRecords(function(){
+			res.redirect('/print');	
+		});
+	});
+		
+	app.post('/apointStore', function(req, res){
+
+		AM.apointStore(req.body, function(e){
+			if (!e){
+	      res.send({msg:'ok'}, 200);
+			}	else{
+				res.send('指定目標失敗', 400);
+			}
+	  });
+	});
+
+	app.get('/getApointStore/:account_id', function(req, res){
+		var account_id = req.param("account_id");
+		AM.getApointStore(account_id, function(e,o){
+			if (!e){
+	      res.send(o, 200);
+			}	else{
+				res.send({msg:'error'}, 400);
+			}
+	  });
+	});
+	
+	app.get('/getHandleStore/:account_id', function(req, res) {
+		var account_id = req.param("account_id");
+		console.log(account_id);
+		AM.getHandleStore(account_id,function(storedata){
+			console.log(storedata);
+			res.send(storedata, 200);
+		});
+	});
+
+		app.get('/getApointUser/:store_id', function(req, res) {
+			var store_id = req.param("store_id");
+			console.log(store_id);
+			AM.getApointUser(store_id,function(e, o){
+				if (!e){
+		      res.send(o, 200);
+				}	else{
+					res.send({msg:'error'}, 400);
+				}
+			});
+		});
+
+	app.get('/reset', function(req, res) {
+		AM.delAllRecords(function(){
+			res.redirect('/print');	
+		});
+	});
 
 	
 	// app.get('*', function(req, res) { res.render('404', { title: 'Page Not Found'}); });

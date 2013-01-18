@@ -27,9 +27,11 @@ html
 			.navbar-inner
 				h1 Moto Express
 				a.btn.btn-primary(href='/') 首頁
-				a.btn.btn-primary(href='/fixnote') 維修記錄
-				a.btn.btn-primary(href='/map') 維修地圖
-				a.btn.btn-primary(href='/addstore') 新增店家
+				//- a.btn.btn-primary(href='/fixnote') 維修記錄
+				- if(locals.session.user!=null && locals.session.user.role == 'USER')
+					a.btn.btn-primary(href='/map') 維修地圖
+
+				a.btn.btn-primary(href='/store') 新增店家
 				- if (locals.session.user == null)
 					a.btn.btn-primary(href='/login') 登入/建立 帳號				
 
@@ -38,10 +40,13 @@ html
 
 
 				- if (locals.session.user != null)
+					input(type='hidden', value= locals.session.user._id)#userId
 					#btn-logout.button.btn.btn-primary
 						i.icon-lock.icon-white 
 						|Sign Out
-					a.btn.btn-primary(href='/setting') 設置	
+					a.btn.btn-primary(href='/setting') 設置 
+					- if(locals.session.user.role == 'STORE')
+						a.btn.btn-primary(href='/cusgeo') 客戶位置
 
 
 
@@ -54,7 +59,7 @@ html
 				p.pull-right
 					a(href='#') 回到頁首
 				p
-					| © 2012 What did you buy?
+					| © 2012
 
 		include modals/alert
 		include modals/confirm

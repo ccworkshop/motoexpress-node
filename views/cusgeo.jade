@@ -1,0 +1,34 @@
+extends layout
+
+block content
+
+	.container-fluid
+		.row-fluid
+			.span3
+				.well.sidebar-nav
+					table.table(id='apointUserTable') 
+						thead
+							tr
+								th 維修客戶
+								th
+								th
+						tbody
+							tr
+								td 
+									a(href='#')無客戶指定
+								td
+								td
+
+
+			.span9
+				#map_canvas(style='width: 100%;')
+
+
+
+
+
+
+
+block footer
+	script(type='text/javascript', src='https://maps.google.com/maps/api/js?sensor=true')
+	script(type='text/javascript', src='js/cusgeo.js')

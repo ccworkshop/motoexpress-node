@@ -56,6 +56,11 @@ exports.addNewAccount = function(newData, callback)
 					// append date stamp when record was created //
 						newData.date = moment().format('MMMM Do YYYY, h:mm:ss a');
 
+						newData.role = "USER";
+					  newData.targetstore_id = "";
+					  newData.latitude = -1;
+					  newData.longitude = -1;
+
 						var account=new stores.accounts(newData);
 
 						console.log(account);
@@ -166,6 +171,58 @@ exports.delAllRecords = function(callback)
 {
 	accounts.remove({}, callback); // reset accounts collection for testing //
 }
+
+exports.apointStore = function(fixdata, callback)
+{
+  accounts.findOne({_id:fixdata.account_id}, function(user_e, user_o) {
+    stores.motostores.findOne({_id:fixdata.store_id}, function(store_e, store_o) {
+
+      if (user_o && store_o){
+        user_o.latitude= fixdata.latitude;
+        user_o.longitude= fixdata.longitude;
+        user_o.targetstore_id= fixdata.store_id;
+
+
+				user_o.save(function(err) {
+					callback(err);
+				});
+      } else{
+        if(user_e)callback(user_e);
+        else callback(store_e);
+      }
+    });
+  });
+}
+
+exports.getHandleStore= function(userid,callback){
+	stores.motostores.findOne({account_id:userid}, function(store_e, store_o) {
+
+      callback(store_o);
+  });
+
+}
+
+exports.getApointUser= function(storeid,callback){
+	accounts.find({targetstore_id:storeid}, function(e, o) {
+
+      callback(e, o);
+  });
+
+}
+
+exports.getApointStore= function(userid,callback){
+  accounts.findOne({_id:userid}, function(user_e, user_o) {
+    stores.motostores.findOne({_id:user_o.targetstore_id}, function(store_e, store_o) {
+      callback(store_e,store_o);
+ 
+    });
+  });
+
+}
+
+
+
+
 
 /* private encryption & validation methods */
 

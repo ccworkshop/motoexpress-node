@@ -12,7 +12,8 @@ var motostoresSchema = new Schema({
   latitude : Number,
   longitude : Number,
   tel : String ,
-  show : String 
+  show : String,
+  account_id:String
 });
 var accountsSchema = new Schema({
 	name 	: String,
@@ -20,6 +21,11 @@ var accountsSchema = new Schema({
 	user 	: String,
 	pass	: String,
 	country : String,
+  role: String,
+  targetstore_id:String,
+  latitude: Number,
+  longitude: Number
+
 });
 
 

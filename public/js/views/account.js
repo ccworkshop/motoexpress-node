@@ -1,7 +1,7 @@
 
 $(document).ready(function(){
 
-	var hc = new HomeController();
+	var ac = new AccountController();
 	var av = new AccountValidator();
 	
 	$('#account-form').ajaxForm({
@@ -15,7 +15,7 @@ $(document).ready(function(){
 			}
 		},
 		success	: function(responseText, status, xhr, $form){
-			if (status == 'success') hc.onUpdateSuccess();
+			if (status == 'success') ac.onUpdateSuccess();
 		},
 		error : function(e){
 			if (e.responseText == 'email-taken'){

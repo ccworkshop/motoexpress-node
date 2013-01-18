@@ -1,3 +1,4 @@
+
 var map = null;
 var objMarker;
 var objPoint;
@@ -8,7 +9,6 @@ var markers = new Array();
 
 var openedInfowindow=null;
 var userMarkConfig=null;
-var appointStoreMarkConfig=null;
 var userid=null;
 
 $(function(){
@@ -22,55 +22,30 @@ $(function(){
 
   userid=$('#userId').val();
 
-
-  if(userid){
-    $.ajax({
-      type:"get",
-      url:"/getApointStore/"+userid,
-      dataType:"json",
-      success:function(result){
-        appointStoreMarkConfig=result;
-        $('#targetStore').html(result.name);
-        gpsLocal();
-
-        
-      },
-      error:function(){
-        return false;
-      }
-    });
-  }
-
-
+  init();
 });
 
 // 顯示經緯度 透過GPS 定位
 
-function init(latitude, longitude){
+function init(){
 
-  if(latitude==null || longitude==null){
-    showAddress();
-  }else{
-    $("#address").val("你的所在位置");
-    var latlng = new google.maps.LatLng(latitude, longitude);
 
-    latlongParseAddress(latlng,function(markConfig){
+
+
+  $.ajax({
+    type:"GET",
+    url:"/getHandleStore/"+$("#userId").val(),
+    dataType:"json",
+    success:function(markConfig){
+
       userMarkConfig=markConfig;
       objAddress=markConfig.address;
-      objCity=markConfig.city;
-
-      $("#city").val(markConfig.city);
 
       if(map==null)
         createMap(markConfig)
       createObjMarker(markConfig);
-
-
-    });
-  }
-
-
-
+    }
+  });
 
 }
 
@@ -124,19 +99,29 @@ function createObjMarker(markConfig){
     
   $.ajax({
     type:"GET",
-    url:"/listNear/"+markConfig.latitude+"/"+markConfig.longitude+"/"+0.1,
+    url:"/getApointUser/"+userMarkConfig._id,
     dataType:"json",
     success:function(result){
+      console.log(result);
 
 
-      if(result.success){
-        var store=result.data;
+      var store=result;
 
-        for (var i = 0; i < store.length; i++) {
-          createMarker(store[i]);
-        };
+      $("#apointUserTable tbody").empty();
+      for (var i = 0; i < store.length; i++) {
 
-      }
+        createMarker(store[i]);
+
+        $("#apointUserTable").last().append(
+          "<tr>" + 
+            "<td>"+store[i].user+"</td>" + 
+            "<td><a class='btn'>開始維修</a></td>" +
+            "<td><a class='btn'>結束維修</a></td>" +
+          "</tr>"
+
+        );
+      };
+
 
     },
     error:function(){
@@ -260,17 +245,7 @@ function createMarker(markConfig)
     '</div>'+
     '</div>';
 
-  createInfoWin(contentString, marker, function(infowindow){
-
-    if(appointStoreMarkConfig._id == markConfig._id){
-      console.log(" this is the apoint store");
-      infowindow.open(map,marker);
-      openedInfowindow=infowindow;
-    }
-      
-  });
-
-
+  createInfoWin(contentString,marker);
 
   markers.push(marker);
 
@@ -289,7 +264,7 @@ function deleteOverlays() {
   }
 }
 
-function createInfoWin(contentString,marker,callback){
+function createInfoWin(contentString,marker){
 
 
   var infowindow = new google.maps.InfoWindow({
@@ -297,13 +272,10 @@ function createInfoWin(contentString,marker,callback){
   });
 
   google.maps.event.addListener(marker, 'click', function() {
-    if(openedInfowindow)openedInfowindow.close();
+    if(openedInfowindow!=null)openedInfowindow.close();
     infowindow.open(map,marker);
     openedInfowindow=infowindow;
   });
-
-  if(callback)
-    callback(infowindow);
 }
 
 

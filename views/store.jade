@@ -1,0 +1,47 @@
+extends layout
+
+block content
+	.container-fluid
+		.row-fluid
+			.span12
+				#account-form-container
+					form( method="post")#store-form.form-horizontal.well.span12
+						h1
+						p#sub1.subheading
+						hr
+						fieldset
+							.control-group
+								label.control-label(for='name-tf') 店家名稱
+								.controls
+									input#name-tf.input-xlarge(type='text', name='name')
+							.control-group
+								label.control-label(for='email-tf') 地址
+								.controls
+									input#address-tf.input-xlarge(type='text', name='address')
+							.control-group
+								label.control-label(for='email-tf') 電話
+								.controls
+									input#tel-tf.input-xlarge(type='text', name='tel')
+							.control-group
+								label.control-label(for='email-tf') 敘述
+								.controls
+									input#description-tf.input-xlarge(type='text', name='description')
+
+							hr
+							p#sub2.subheading
+							#user-cg.control-group
+								label.control-label(for='user-tf') latitude
+								.controls
+									input#latitude-tf.input-xlarge(type='text', name='latitude', placeholder='系統計算',readonly)
+							#pass-cg.control-group
+								label.control-label(for='pass-tf') longitude
+								.controls
+									input#longitude-tf.input-xlarge(type='text', name='longitude',placeholder='系統計算' ,readonly)
+							.form-actions
+								button(type='button')#store-form-btn1.btn
+								button(type='submit')#store-form-btn2.btn
+
+block footer
+	script(type='text/javascript', src='https://maps.google.com/maps/api/js?sensor=true')
+	script(src='/js/views/store.js')
+	script(src='/js/controllers/storeCtrl.js')
